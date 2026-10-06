@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+
+{% block title %}Blood Issues - Blood Bank{% endblock %}
+
+{% block content %}
+
+<div class="page-title">
+    <h2>Blood Issue Management</h2>
+    <p>Track blood issued to patients from available inventory</p>
+</div>
+
+<!-- ADD BLOOD ISSUE -->
+
+<div class="form-container">
+
+    <h3 style="color:#8b0000; margin-bottom:20px;">
+        Issue Blood
+    </h3>
+
+    <form action="/issues/add" method="POST">
+
+        <div class="form-group">
+            <label>Issue Code</label>
+            <input type="text"
+                   name="issue_code"
+                   placeholder="Example: ISS006"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Request ID</label>
+            <input type="number"
+                   name="request_id"
+                   placeholder="Example: 6"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Patient ID</label>
+            <input type="number"
+                   name="patient_id"
+                   placeholder="Example: 6"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Hospital ID</label>
+            <input type="number"
+                   name="hospital_id"
+                   placeholder="Example: 1"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Blood Group</label>
+
+            <select name="blood_group_id" required>
+                <option value="">Select Blood Group</option>
+                <option value="1">A+</option>
+                <option value="2">A-</option>
+                <option value="3">B+</option>
+                <option value="4">B-</option>
+                <option value="5">AB+</option>
+                <option value="6">AB-</option>
+                <option value="7">O+</option>
+                <option value="8">O-</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Inventory ID</label>
+            <input type="number"
+                   name="inventory_id"
+                   placeholder="Available inventory ID"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Issue Date</label>
+            <input type="date"
+                   name="issue_date"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Quantity Issued</label>
+
+            <input type="number"
+                   name="quantity_issued_ml"
+                   min="1"
+                   max="150"
+                   value="150"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Patient Use Date</label>
+
+            <input type="date"
+                   name="patient_use_date"
+                   required>
+        </div>
+
+        <button type="submit" class="btn">
+            🩸 Issue Blood
+        </button>
+
+    </form>
+
+</div>
+
+<br><br>
+
+<!-- EXISTING ISSUES -->
+
+<div class="table-container">
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:15px;
+    ">
+
+        <h3 style="color:#8b0000;">
+            Blood Issue Records
+        </h3>
+
+        <span>
+            Total Issues:
+            <b>{{ issues|length }}</b>
+        </span>
+
+    </div>
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>ID</th>
+                <th>Issue Code</th>
+                <th>Patient</th>
+                <th>Hospital</th>
+                <th>Blood Group</th>
+                <th>Inventory ID</th>
+                <th>Issue Date</th>
+                <th>Quantity</th>
+                <th>Patient Use Date</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for issue in issues %}
+
+            <tr>
+
+                <td>{{ issue.issue_id }}</td>
+
+                <td>{{ issue.issue_code }}</td>
+
+                <td>
+                    {{ issue.patient_code }} -
+                    {{ issue.patient_name }}
+                </td>
+
+                <td>
+                    {{ issue.hospital_code }} -
+                    {{ issue.hospital_name }}
+                </td>
+
+                <td>
+                    <b>{{ issue.blood_group }}</b>
+                </td>
+
+                <td>{{ issue.inventory_id }}</td>
+
+                <td>{{ issue.issue_date }}</td>
+
+                <td>
+                    {{ issue.quantity_issued_ml }} mL
+                </td>
+
+                <td>{{ issue.patient_use_date }}</td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}Donations - Blood Bank{% endblock %}
+
+{% block content %}
+
+<div class="page-title">
+    <h2>Blood Donation Management</h2>
+    <p>Record and manage blood donations</p>
+</div>
+
+<div class="form-container">
+
+    <h3 style="color:#8b0000; margin-bottom:20px;">
+        Record New Donation
+    </h3>
+
+    <form action="/donations/add" method="POST">
+
+        <div class="form-group">
+            <label>Donation Code</label>
+            <input type="text"
+                   name="donation_code"
+                   placeholder="Example: DN017"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Donor ID</label>
+            <input type="number"
+                   name="donor_id"
+                   placeholder="Example: 1"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Blood Group</label>
+
+            <select name="blood_group_id" required>
+                <option value="">Select Blood Group</option>
+                <option value="1">A+</option>
+                <option value="2">A-</option>
+                <option value="3">B+</option>
+                <option value="4">B-</option>
+                <option value="5">AB+</option>
+                <option value="6">AB-</option>
+                <option value="7">O+</option>
+                <option value="8">O-</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Donation Date</label>
+            <input type="date"
+                   name="donation_date"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Quantity</label>
+            <input type="text"
+                   value="150 mL"
+                   readonly>
+        </div>
+
+        <div class="form-group">
+            <label>Screening Status</label>
+
+            <select name="screening_status" required>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Expiry Date</label>
+            <input type="date"
+                   name="expiry_date">
+        </div>
+
+        <button type="submit" class="btn">
+            ➕ Record Donation
+        </button>
+
+    </form>
+
+</div>
+
+<br><br>
+
+<div class="table-container">
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:15px;
+    ">
+
+        <h3 style="color:#8b0000;">
+            Donation Records
+        </h3>
+
+        <span>
+            Total Donations:
+            <b>{{ donations|length }}</b>
+        </span>
+
+    </div>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Donation Code</th>
+                <th>Donor Code</th>
+                <th>Donor Name</th>
+                <th>Blood Group</th>
+                <th>Donation Date</th>
+                <th>Quantity</th>
+                <th>Screening</th>
+                <th>Expiry Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for donation in donations %}
+
+            <tr>
+
+                <td>{{ donation.donation_id }}</td>
+
+                <td>{{ donation.donation_code }}</td>
+
+                <td>{{ donation.donor_code }}</td>
+
+                <td>{{ donation.donor_name }}</td>
+
+                <td>
+                    <b>{{ donation.blood_group }}</b>
+                </td>
+
+                <td>{{ donation.donation_date }}</td>
+
+                <td>
+                    {{ donation.quantity_ml }} mL
+                </td>
+
+                <td>{{ donation.screening_status }}</td>
+
+                <td>{{ donation.expiry_date or '-' }}</td>
+
+                <td>
+
+                    <form
+                        action="/donations/delete/{{ donation.donation_id }}"
+                        method="POST"
+                        onsubmit="return confirm('Are you sure you want to delete this donation?');"
+                    >
+
+                        <button type="submit"
+                                class="btn btn-danger">
+                            Delete
+                        </button>
+
+                    </form>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

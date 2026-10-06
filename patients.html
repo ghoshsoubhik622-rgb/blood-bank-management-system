@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block title %}Patients - Blood Bank{% endblock %}
+
+{% block content %}
+
+<div class="page-title">
+    <h2>Patient Management</h2>
+    <p>Register and manage patients requiring blood</p>
+</div>
+
+<!-- ADD PATIENT -->
+
+<div class="form-container">
+
+    <h3 style="color:#8b0000; margin-bottom:20px;">
+        Add New Patient
+    </h3>
+
+    <form action="/patients/add" method="POST">
+
+        <div class="form-group">
+            <label>Patient Code</label>
+            <input type="text"
+                   name="patient_code"
+                   placeholder="Example: P009"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Patient Name</label>
+            <input type="text"
+                   name="patient_name"
+                   placeholder="Enter patient name"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Age</label>
+            <input type="number"
+                   name="age"
+                   min="0"
+                   max="120"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Gender</label>
+
+            <select name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Blood Group</label>
+
+            <select name="blood_group_id" required>
+                <option value="">Select Blood Group</option>
+                <option value="1">A+</option>
+                <option value="2">A-</option>
+                <option value="3">B+</option>
+                <option value="4">B-</option>
+                <option value="5">AB+</option>
+                <option value="6">AB-</option>
+                <option value="7">O+</option>
+                <option value="8">O-</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Phone</label>
+            <input type="text"
+                   name="phone"
+                   placeholder="Enter phone number">
+        </div>
+
+        <div class="form-group">
+            <label>Address</label>
+            <input type="text"
+                   name="address"
+                   placeholder="Enter address">
+        </div>
+
+        <div class="form-group">
+            <label>Medical Condition</label>
+            <input type="text"
+                   name="medical_condition"
+                   placeholder="Example: Anemia">
+        </div>
+
+        <div class="form-group">
+            <label>Registration Date</label>
+            <input type="date"
+                   name="registration_date"
+                   required>
+        </div>
+
+        <button type="submit" class="btn">
+            ➕ Add Patient
+        </button>
+
+    </form>
+
+</div>
+
+<br><br>
+
+<!-- PATIENT TABLE -->
+
+<div class="table-container">
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:15px;
+    ">
+
+        <h3 style="color:#8b0000;">
+            Registered Patients
+        </h3>
+
+        <span>
+            Total Patients:
+            <b>{{ patients|length }}</b>
+        </span>
+
+    </div>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Blood Group</th>
+                <th>Phone</th>
+                <th>Medical Condition</th>
+                <th>Registration Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for patient in patients %}
+
+            <tr>
+
+                <td>{{ patient.patient_id }}</td>
+
+                <td>{{ patient.patient_code }}</td>
+
+                <td>{{ patient.patient_name }}</td>
+
+                <td>{{ patient.age }}</td>
+
+                <td>{{ patient.gender }}</td>
+
+                <td>
+                    <b>{{ patient.blood_group }}</b>
+                </td>
+
+                <td>{{ patient.phone or '-' }}</td>
+
+                <td>{{ patient.medical_condition or '-' }}</td>
+
+                <td>{{ patient.registration_date }}</td>
+
+                <td>
+
+                    <form
+                        action="/patients/delete/{{ patient.patient_id }}"
+                        method="POST"
+                        onsubmit="return confirm('Are you sure you want to delete this patient?');"
+                    >
+
+                        <button
+                            type="submit"
+                            class="btn btn-danger"
+                        >
+                            Delete
+                        </button>
+
+                    </form>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

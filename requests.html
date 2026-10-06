@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}Blood Requests - Blood Bank{% endblock %}
+
+{% block content %}
+
+<div class="page-title">
+    <h2>Blood Request Management</h2>
+    <p>Manage blood requests from patients and hospitals</p>
+</div>
+
+<!-- ADD REQUEST -->
+
+<div class="form-container">
+
+    <h3 style="color:#8b0000; margin-bottom:20px;">
+        Create New Blood Request
+    </h3>
+
+    <form action="/requests/add" method="POST">
+
+        <div class="form-group">
+            <label>Request Code</label>
+            <input type="text"
+                   name="request_code"
+                   placeholder="Example: REQ009"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Patient ID</label>
+            <input type="number"
+                   name="patient_id"
+                   placeholder="Example: 1"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Hospital ID</label>
+            <input type="number"
+                   name="hospital_id"
+                   placeholder="Example: 1"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Blood Group</label>
+
+            <select name="blood_group_id" required>
+                <option value="">Select Blood Group</option>
+                <option value="1">A+</option>
+                <option value="2">A-</option>
+                <option value="3">B+</option>
+                <option value="4">B-</option>
+                <option value="5">AB+</option>
+                <option value="6">AB-</option>
+                <option value="7">O+</option>
+                <option value="8">O-</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Request Date</label>
+            <input type="date"
+                   name="request_date"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Quantity Required</label>
+            <input type="number"
+                   name="quantity_required_ml"
+                   min="1"
+                   max="150"
+                   value="150"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Request Status</label>
+
+            <select name="request_status" required>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+                <option value="Completed">Completed</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn">
+            ➕ Create Request
+        </button>
+
+    </form>
+
+</div>
+
+<br><br>
+
+<!-- REQUEST TABLE -->
+
+<div class="table-container">
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:15px;
+    ">
+
+        <h3 style="color:#8b0000;">
+            Blood Requests
+        </h3>
+
+        <span>
+            Total Requests:
+            <b>{{ requests|length }}</b>
+        </span>
+
+    </div>
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>ID</th>
+                <th>Request Code</th>
+                <th>Patient</th>
+                <th>Hospital</th>
+                <th>Blood Group</th>
+                <th>Request Date</th>
+                <th>Quantity</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for req in requests %}
+
+            <tr>
+
+                <td>{{ req.request_id }}</td>
+
+                <td>{{ req.request_code }}</td>
+
+                <td>
+                    {{ req.patient_code }} -
+                    {{ req.patient_name }}
+                </td>
+
+                <td>
+                    {{ req.hospital_code }} -
+                    {{ req.hospital_name }}
+                </td>
+
+                <td>
+                    <b>{{ req.blood_group }}</b>
+                </td>
+
+                <td>{{ req.request_date }}</td>
+
+                <td>
+                    {{ req.quantity_required_ml }} mL
+                </td>
+
+                <td>{{ req.request_status }}</td>
+
+                <td>
+
+                    <form
+                        action="/requests/delete/{{ req.request_id }}"
+                        method="POST"
+                        onsubmit="return confirm('Are you sure you want to delete this request?');"
+                    >
+
+                        <button
+                            type="submit"
+                            class="btn btn-danger"
+                        >
+                            Delete
+                        </button>
+
+                    </form>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

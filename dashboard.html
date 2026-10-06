@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Blood Bank{% endblock %}
+
+{% block content %}
+
+<div class="page-title">
+    <h2>Dashboard</h2>
+    <p>Blood Bank Donation and Issue Management System</p>
+</div>
+
+<div class="cards">
+
+    <div class="card">
+        <h3>Total Donors</h3>
+        <div class="number">{{ donors }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Total Patients</h3>
+        <div class="number">{{ patients }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Total Hospitals</h3>
+        <div class="number">{{ hospitals }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Inventory Records</h3>
+        <div class="number">{{ inventory }}</div>
+    </div>
+
+</div>
+
+<br><br>
+
+<div class="table-container">
+
+    <h3 style="margin-bottom: 15px; color:#8b0000;">
+        System Overview
+    </h3>
+
+    <table>
+        <tr>
+            <th>Module</th>
+            <th>Description</th>
+        </tr>
+
+        <tr>
+            <td>Donors</td>
+            <td>Manage registered blood donors</td>
+        </tr>
+
+        <tr>
+            <td>Donations</td>
+            <td>Record blood donations and screening status</td>
+        </tr>
+
+        <tr>
+            <td>Inventory</td>
+            <td>Track available blood units and expiry dates</td>
+        </tr>
+
+        <tr>
+            <td>Patients</td>
+            <td>Manage patient information</td>
+        </tr>
+
+        <tr>
+            <td>Blood Requests</td>
+            <td>Manage hospital blood requests</td>
+        </tr>
+
+        <tr>
+            <td>Blood Issues</td>
+            <td>Track blood issued to patients</td>
+        </tr>
+
+    </table>
+
+</div>
+
+{% endblock %}
